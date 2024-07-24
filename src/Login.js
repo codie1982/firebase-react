@@ -1,7 +1,8 @@
 // src/Login.js
 import React, { useState } from 'react';
-import firebaseApp from './firebase';
+import firebase from './firebase';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Form,Row,Col, Container } from 'react-bootstrap';
 
 const Login = () => {
     const auth = getAuth();
@@ -25,28 +26,34 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <button type="submit">Login</button>
-            </form>
-        </div>
+        <Container>
+            <Form.Group className="mb-3">
+            <Row className="justify-content-md-center">
+                <Col>
+                <h2>Login</h2>
+                </Col>
+            </Row>
+            <Row className="justify-content-md-center">
+                <Col>
+                <Form.Label>Email</Form.Label>
+                    <Form.Control placeholder="email" type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)} />
+                                </Col>
+                               
+            </Row>
+            <Row>
+            <Col>
+                                <Form.Label>Password</Form.Label>
+                    <Form.Control placeholder="password" type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)} />
+                                </Col>
+            </Row>
+            
+           
+        </Form.Group>
+     </Container>
     );
 };
 
