@@ -1,6 +1,8 @@
 /**
  * This represents some generic auth provider API, like Firebase.
  */
+import firebaseApp from "./firebase.js"
+
 const fakeAuthProvider = {
     isAuthenticated: false,
     signin(callback) {

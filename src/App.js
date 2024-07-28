@@ -38,7 +38,7 @@ export default function App() {
 function Layout() {
   return (
     <div>
-      <AuthStatus />
+      {/* <AuthStatus /> */}
 
       <ul>
         <li>
@@ -49,7 +49,7 @@ function Layout() {
         </li>
       </ul>
 
-      <Outlet />
+      {/* <Outlet /> */}
     </div>
   );
 }
