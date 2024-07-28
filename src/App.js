@@ -1,6 +1,8 @@
 import * as React from "react";
 import Login from "./components/Login.js"
 import Dashboard from "./components/Dashboard.js"
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import {
   Routes,
   Route,
@@ -15,12 +17,10 @@ import { fakeAuthProvider } from "./auth.js";
 export default function App() {
   return (
     <AuthProvider>
-     
-      <h1>Auth Example</h1>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={ <Login />} />
-          <Route path="/login" element={<LoginPage />} />
+    {/*       <Route path="/login" element={<LoginPage />} /> */}
           <Route
             path="/protected"
             element={
@@ -38,9 +38,8 @@ export default function App() {
 function Layout() {
   return (
     <div>
-      {/* <AuthStatus /> */}
-
-      <ul>
+     
+      {/* <ul>
         <li>
           <Link to="/">Public Page</Link>
         </li>
@@ -48,8 +47,8 @@ function Layout() {
           <Link to="/protected">Protected Page</Link>
         </li>
       </ul>
-
-      {/* <Outlet /> */}
+      <AuthStatus /> */}
+      <Outlet />
     </div>
   );
 }

@@ -79,26 +79,34 @@ function Login() {
     return (
         <AuthProvider>
             <Container>
-                    <Row className="d-flex align-items-center justify-content-center text-center min-vh-100">
-                        <Col md={{ span: 4 }}>
+                    <Row className="d-flex align-items-center justify-content-center text-center">
+                    <Row>
+                      <Col>
+                      <h1>Giriş Yapın</h1>
+                      </Col>
+                    </Row>
+                        <Col md={{ span:8}}>
                         <Form onSubmit={handleSubmit}>
-                        <Form.Group className="mb-3" controlId="formBasicEmail" >
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email"  />
-                            <Form.Text className="text-muted">
-                            </Form.Text>
+                        <Form.Group as={Row} className="mb-3" controlId="formBasicEmail" >
+                            <Form.Label column sm="4">Mail Adresi</Form.Label>
+                            <Col>
+                            <Form.Control type="email" placeholder="mail adresinizi giriniz"  />
+                            <Form.Text className="text-muted"></Form.Text>
+                            </Col>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password"  />
+                        <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
+                            <Form.Label column sm="4">Şifre</Form.Label>
+                            <Col>
+                              <Form.Control type="password" placeholder="şifreniz"  />
+                            </Col>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Check me out" />
-                        </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
+                        <Row>
+                          <Col md={{offset:4,span:2}}><Button variant="primary" type="submit">Giriş Yap</Button></Col>
+                          <Col  md={{span:2}}><Button variant="outline-primary" type="submit">Kayıt Ol</Button></Col>
+                        </Row>
+                          
+                          
                         </Form>
                         </Col>
                     </Row>
