@@ -1,8 +1,11 @@
 import * as React from "react";
+import Header from "./components/Header.js";
+import Home from "./components/Home.js"
 import Login from "./components/Login.js"
+import Register from "./components/Register.js"
 import Dashboard from "./components/Dashboard.js"
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import {isUserLoggedIn,getCurrentUser} from "./auth.js"
 import {
   Routes,
   Route,
@@ -11,29 +14,40 @@ import {
   useLocation,
   Navigate,
   Outlet,
+  useRoutes,
 } from "react-router-dom";
-import { fakeAuthProvider } from "./auth.js";
+import { AuthProvider } from "./context/authContext/index.js";
 
 export default function App() {
+  const routesArray = [
+    {
+      path: "*",
+      element: <Login />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/home",
+      element: <Home />,
+    },
+  ];
+  let routesElement = useRoutes(routesArray);
+  
   return (
     <AuthProvider>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={ <Login />} />
-    {/*       <Route path="/login" element={<LoginPage />} /> */}
-          <Route
-            path="/protected"
-            element={
-              <RequireAuth>
-                <Dashboard />
-              </RequireAuth>
-            }
-          />
-        </Route>
-      </Routes>
+      <Header />
+      <div className="w-full h-screen flex flex-col">{routesElement}</div>
     </AuthProvider>
+    
   );
 }
+
 
 function Layout() {
   return (
@@ -53,35 +67,11 @@ function Layout() {
   );
 }
 
-const AuthContext = React.createContext(null);
 
-function AuthProvider({ children }) {
-  const [user, setUser] = React.useState(null);
 
-  const signin = (newUser, callback) => {
-    return fakeAuthProvider.signin(() => {
-      setUser(newUser);
-      callback();
-    });
-  };
 
-  const signout = (callback) => {
-    return fakeAuthProvider.signout(() => {
-      setUser(null);
-      callback();
-    });
-  };
 
-  const value = { user, signin, signout };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-function useAuth() {
-  return React.useContext(AuthContext);
-}
-
-function AuthStatus() {
+/* function AuthStatus() {
   const auth = useAuth();
   const navigate = useNavigate();
 
@@ -101,50 +91,18 @@ function AuthStatus() {
       </button>
     </p>
   );
-}
+} */
 
-function RequireAuth({ children }) {
+/* function RequireAuth({ children }) {
   const auth = useAuth();
   const location = useLocation();
-
+console.log("auth",auth)
   if (!auth.user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   return children;
-}
-
-function LoginPage() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const auth = useAuth();
-
-  const from = location.state?.from?.pathname || "/";
-
-  function handleSubmit(event) {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    const username = formData.get("username");
-
-    auth.signin(username, () => {
-      navigate(from, { replace: true });
-    });
-  }
-
-  return (
-    <div>
-      <p>You must log in to view the page at {from}</p>
-
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username: <input name="username" type="text" />
-        </label>{" "}
-        <button type="submit">Login</button>
-      </form>
-    </div>
-  );
-}
+} */
 
 function PublicPage() {
   return <h3>Public</h3>;
