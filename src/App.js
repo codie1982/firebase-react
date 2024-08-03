@@ -33,7 +33,7 @@ export default function App() {
       element: <Register />,
     },
     {
-      path: "/home",
+      path: "/home/:page?",
       element: <Home />,
     },
   ];

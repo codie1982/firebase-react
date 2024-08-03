@@ -1,12 +1,12 @@
 import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"; 
-import {auth,storage} from "./firebase.js"
-
-const SONGCOLLECTION = "Song"
+import {storage} from "./firebase.js"
 
 
-export const uploadSong =  (uploadAudio,uid,onProgress)=>{
+
+export const uploadSong =  (uploadAudio,uid,index,onProgress)=>{
   return new Promise((resolve,reject)=>{
-    const storageRef = ref(storage, 'audio'+'/' + uid +'/'+ + uploadAudio.name);
+    console.log("uploadAudio",uploadAudio)
+    const storageRef = ref(storage, 'audio'+'/'+ uid+'/'+ uploadAudio.name);
     const uploadTask = uploadBytesResumable(storageRef, uploadAudio);
     // Register three observers:
     // 1. 'state_changed' observer, called any time the state changes
@@ -17,8 +17,9 @@ export const uploadSong =  (uploadAudio,uid,onProgress)=>{
         // Observe state change events such as progress, pause, and resume
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        if (onProgress) onProgress(progress);
+        if (onProgress) onProgress(index , progress);
         //console.log('Upload is ' + progress + '% done');
+        console.log("snapshot.state",snapshot.state)
         switch (snapshot.state) {
           case 'paused':
             //console.log('Upload is paused');
@@ -36,7 +37,7 @@ export const uploadSong =  (uploadAudio,uid,onProgress)=>{
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          resolve(downloadURL);
+          resolve({index,url:downloadURL});
         })
         .catch((error) => {
           reject(error);

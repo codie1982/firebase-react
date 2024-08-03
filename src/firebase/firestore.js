@@ -1,10 +1,12 @@
-import { doc,collection, addDoc,getDocs,updateDoc } from "firebase/firestore"; 
+import { doc,collection, addDoc,getDocs,updateDoc,query,orderBy,startAfter,limit} from "firebase/firestore"; 
 import {auth,db} from "./firebase.js"
 
 const SONGCOLLECTION = "Song"
 
-export const getSongList = async ()=>{
-    const result = await getDocs(collection(db, SONGCOLLECTION));
+export const getSongList = async (lastVisibleDoc,pageSize)=>{
+    const songsRef = collection(db, SONGCOLLECTION);
+    let q =  query(songsRef, orderBy("name"), startAfter(1), limit(2));
+    const result = await getDocs(q);
    return result;
 }
 
