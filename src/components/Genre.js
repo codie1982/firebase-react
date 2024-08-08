@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Row, Col, Container, Button, Table, Modal, Pagination,ButtonGroup } from 'react-bootstrap';
 import { useParams, useNavigate, Navigate } from "react-router-dom"
-import { useAuth } from '../context/authContext'
+import { useAuth } from '../context/authContext/index.js'
 import { getSongs, createSong, getSongCount } from "../firebase/firestore.js"
 import { uploadSong } from '../firebase/storage.js';
 import {Song} from "../Model/Song.js"
@@ -9,7 +9,7 @@ import { timestampToDate } from '../util/Time.js';
 import PlaylistModal from './Modal/PlaylistModal.js';
 
 
-function Home(params) {
+function Genre(params) {
   const { page } = useParams();
   const { currentUser, userLoggedIn } = useAuth()
   const [currentPage, setCurrentPage] = useState(Number(page) || 1);
@@ -19,7 +19,7 @@ function Home(params) {
   const [loading, setLoading] = useState(false);
   
   const [addSongModal, setAddSongModal] = useState(false);
-
+  const [addListModal, setAddListModal] = useState(false);
   const [addAlbumModal, setAddAlbumModal] = useState(false);
   const [addPerformerModal, setAddPerformerModal] = useState(false);
   const [addGenreModal, setAddGenreModal] = useState(false);
@@ -39,14 +39,14 @@ function Home(params) {
   
   
   const handleCloseAddSongModal = () => setAddSongModal(false);
-
+  const handleClosePlaylistModal = ()=> setAddListModal(false)
   const handleCloseAddALbumModal = () => setAddAlbumModal(false);
   const handleCloseAddPerformerModal = () => setAddPerformerModal(false);
   const handleCloseAddGenreModal = () => setAddGenreModal(false);
 
 
   const handleAddSongModal = () => setAddSongModal(true);
-
+  const openPlaylistModal = ()=> setAddListModal(true)
   const handleAddAlbumModal = () => setAddAlbumModal(true);
   const handleAddPerformerModal = () => setAddPerformerModal(true);
   const handleAddGenreModal = () => setAddGenreModal(true);
@@ -182,18 +182,6 @@ function Home(params) {
     setStartData((pageNumber - 1) * numberOfDataOnPage)
     setCurrentPage(pageNumber)
   }
-  const navigateToList = ()=>{
-    navigate(`/list`)
-  }
-  const navigateToAlbum = ()=>{
-    navigate(`/album`)
-  }
-  const navigateToPerformer = ()=>{
-    navigate(`/performer`)
-  }
-  const navigateToGenre = ()=>{
-    navigate(`/genre`)
-  }
   return (
     <>
       {!userLoggedIn ?
@@ -202,12 +190,14 @@ function Home(params) {
         <>
           <Container>
             <Row><Col><div className='text-2xl font-bold pt-14'>Merhaba {currentUser.displayName ? currentUser.displayName : currentUser.email}, Listeni düzenlemeye başlayabilirsin.</div></Col></Row>
-           
             <Row>
               <Col md="12">
                 <ButtonGroup aria-label="Basic example">
                   <Button variant="secondary" onClick={handleAddSongModal}>Şarkı Ekle</Button>
-                  <Button variant="secondary" onClick={navigateToList}>Listelerim</Button>
+                  <Button variant="secondary" onClick={openPlaylistModal}>Liste Ekle</Button>
+                  <Button variant="secondary" onClick={handleAddAlbumModal}>Albüm Ekle</Button>
+                  <Button variant="secondary" onClick={handleAddPerformerModal}>Sanatçı Ekle</Button>
+                  <Button variant="secondary" onClick={handleAddGenreModal}>Tür Ekle</Button>
               </ButtonGroup>
               </Col>
               </Row>
@@ -242,7 +232,7 @@ function Home(params) {
                       )) :
                         (
                           <tr>
-                            <td colSpan="4">Şarkı Bulunamadı</td>
+                            <td colSpan="4">No songs found</td>
                           </tr>
                         )}
                     </tbody>
@@ -320,7 +310,7 @@ function Home(params) {
                           )) :
                             (
                               <tr>
-                                <td colSpan="4">Şarkı Bulunamadı</td>
+                                <td colSpan="4">No songs found</td>
                               </tr>
                             )}
                         </tbody>
@@ -342,6 +332,8 @@ function Home(params) {
                 </Button>
               </Modal.Footer>
             </Modal>
+
+            <PlaylistModal show={addListModal} handleClose={handleClosePlaylistModal}/>
             
             <Modal size="lg" show={addAlbumModal} onHide={handleCloseAddALbumModal}>
               <Modal.Header closeButton>
@@ -555,4 +547,4 @@ function Home(params) {
   )
 }
 
-export default Home
+export default Genre

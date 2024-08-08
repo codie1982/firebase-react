@@ -1,6 +1,10 @@
 import * as React from "react";
 import Header from "./components/Header.js";
 import Home from "./components/Home.js"
+import List from "./components/List.js"
+import Album from "./components/Album.js"
+import Performer from "./components/Performer.js"
+import Genre from "./components/Genre.js"
 import Login from "./components/Login.js"
 import Register from "./components/Register.js"
 import Dashboard from "./components/Dashboard.js"
@@ -17,6 +21,7 @@ import {
   useRoutes,
 } from "react-router-dom";
 import { AuthProvider } from "./context/authContext/index.js";
+
 
 export default function App() {
   const routesArray = [
@@ -35,6 +40,22 @@ export default function App() {
     {
       path: "/home/:page?",
       element: <Home />,
+    },
+    {
+      path: "/list/:page?",
+      element: <List />,
+    },
+    {
+      path: "/album/:page?",
+      element: <Album />,
+    },
+    {
+      path: "/performer/:page?",
+      element: <Performer />,
+    },
+    {
+      path: "/genre/:page?",
+      element: <Genre />,
     },
   ];
   let routesElement = useRoutes(routesArray);
