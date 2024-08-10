@@ -25,8 +25,7 @@ function List(params) {
 
   const [playlist, setPlaylist] = useState([])
 
-  const [uploadFiles, setUploadfiles] = useState([])
-  const [error, setError] = useState("")
+
 
   const [pageNumber, setPageNumber] = useState()
   const [totalDataCount, setTotalDataCount] = useState(0)
@@ -44,53 +43,11 @@ function List(params) {
     fetchLists()
   }, [])
 
-  useEffect(() => {
-    console.log("totalDataCount", totalDataCount)
-    let _pageCount;
-    let pageCountArray = []
-    _pageCount = totalDataCount / numberOfDataOnPage
-    for (let i = 0; i < _pageCount; i++) {
-      pageCountArray.push(i + 1)
-    }
-    setPageCount(pageCountArray)
-  }, [totalDataCount])
-  
-  useEffect(() => {
-    console.log("pageCount", pageCount)
-  }, [pageCount])
-
-
-  useEffect(() => {
-    console.log("files", files)
-    var _uploadFiles = []
-    for (let index = 0; index < files.length; index++) {
-      const element = files[index];
-      _uploadFiles.push(
-        {
-          id: index,
-          name: element.name,
-          size: element.size / 1024 / 1024,
-          type: element.type,
-          progress: 0,
-          url: ""
-        })
-    }
-    setUploadfiles(_uploadFiles)
-  }, [files])
 
 
 
-  function setUploadFilesState(index, progress) {
-    setProgress(progress)
 
-    for (let i = 0; i < uploadFiles.length; i++) {
-      if (i == index) {
-        uploadFiles[i].progress = progress
-      }
-    }
-    console.log("_uploadFiles", uploadFiles)
-    setUploadfiles(uploadFiles)
-  }
+
 
   const openPlaylistDetailModal = (playlistID)=>{
     setPlatlistDetailModal({id:playlistID,state:true})
